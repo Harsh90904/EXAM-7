@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const userRouter = Router();
-
+const sendingMail = require("../service/email")
 const { getAllUsers, getUserById, createUser, updateUser, deleteUser, loginpage, login, signup, signuppage, profile } = require('../controller/user.controller');
 const upload = require('../middleware/multer');
 const { getProfile, addProduct } = require('../controller/product.controller');
@@ -23,6 +23,13 @@ userRouter.post("/upload", upload.single("profile"), (req, res) => {
     console.log("req.file", req.file);
 
     res.send("file uploaded successfully")
+})
+
+// mail
+userRouter.post("/mail", (req, res) => {
+    const {to,subject,html} = req.body
+    sendingMail(to,subject,html)
+    res.send("sending mail") 
 })
 
 module.exports = userRouter;
